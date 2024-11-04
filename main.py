@@ -3,7 +3,7 @@ import turtle
 # Define the L-system parameters
 axiom = "F"
 rules = {
-    "F": "FF+[+F-F-F]-[-F+F+F]"
+    "F": "F[+F]F[-F]F"
 }
 
 angle = 22.5  # Angle to turn (adjust for more natural branching)
