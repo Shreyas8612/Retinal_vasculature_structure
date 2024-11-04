@@ -6,7 +6,7 @@ import math
 axiom = "F" # The starting point
 rules = { "F": "F[+F]F[-F]F" } # How to change the axiom as it grows
 length = 5  # Length of each line segment
-Thickness = 2  # Thickness of the lines
+Thickness = 4  # Thickness of the lines
 
 angle = 15  # Angle to turn (adjust for more natural branching)
 iterations = 3  # Number of iterations (increase for more complexity)
