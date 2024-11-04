@@ -5,7 +5,7 @@ This project is part of a broader goal to create a model of **retinal blood vess
 
 The ultimate aim is to compare vessel positions before and after surgery and assist patients in positioning their heads to promote the correct placement of the retina during healing. For now, the project focuses on modeling vessel-like branching structures as a foundation.
 
-!<img src="L-Systems.webp" alt="L-Systems" width="40%" style="display: block; margin: auto;"/>
+<img src="L-Systems.webp" alt="L-Systems" width="40%" style="display: block; margin: auto;"/>
 
 *Note: The image above is a visual representation of what an L-system-generated branching structure might look like. The code in this project generates a similar pattern.*
 
