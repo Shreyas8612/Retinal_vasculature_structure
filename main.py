@@ -1,43 +1,38 @@
 import turtle
 from My_Functions import *
 
-# Define the L-system parameters
-axiom = "F"  # Starting point
-rules = {"F": "F[+F]F[-F]F"}  # Updated rules for realistic branching
-base_length = 10  # Base length of each line segment
-length_decrement = 0.85  # Factor to reduce length for each iteration
-thickness = 4  # Initial thickness of the lines
-angle = 25  # Angle for branching
-iterations = 4  # Number of iterations for L-system
+# Define L-system parameters
+base_length = 150  # Increase the base length to match the pattern in the image
+length_decrement = 0.85
+thickness = 6
 
-# Monte Carlo Parameters for Capillary Branching
-max_depth = 3
-branch_probability = 0.5
-angle_range = (-20, 20)
-length_range = (5, 10)
+# Monte Carlo branching parameters
+max_depth = 4  # Limit the depth to create controlled branching
+branch_probability = 0.7  # More likely to branch in the early stages
+initial_branch_count = 6  # Number of main branches from the optic nerve
+angle_range = (-45, 45)
+radius = 180  # Radius for the initial circular spread of branches
+length_range = (20, 35)
 
-# Main code
 if __name__ == "__main__":
-    instructions = create_lsystem(axiom, rules, iterations)
 
-    # Set up the turtle for drawing
+    # Set up turtle environment
     t = turtle.Turtle()
     screen = turtle.Screen()
     screen.bgcolor("white")
     t.hideturtle()
     t.speed(0)
     t.color("black")
-    t.penup()
-    t.goto(0, -250)  # Start near the center-bottom of the screen
-    t.left(90)
-    t.pendown()
     t.pensize(thickness)
 
+    # Generate the lookup table for angles
     lookup_table = generate_lookup_table()
-    
-    # Draw using multiple turtles
-    initial_turtles = [t]
-    draw_with_multiple_turtles(initial_turtles, instructions, lookup_table, base_length, branch_probability)
+
+    # Draw initial branches
+    initial_turtles = draw_initial_branches(t, initial_branch_count, base_length)
+
+    # Draw further branches with multiple turtles
+    draw_with_multiple_turtles(initial_turtles, lookup_table, base_length * 0.8, branch_probability)
 
     # Keep the window open until clicked
     screen.exitonclick()
