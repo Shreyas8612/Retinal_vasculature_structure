@@ -1,38 +1,40 @@
-import turtle
 from My_Functions import *
+import turtle
 
-# Define L-system parameters
-base_length = 150  # Increase the base length to match the pattern in the image
-length_decrement = 0.85
+# Parameters for the central retinal artery
+central_retinal_artery_length = 125  # Length of the central retinal artery
+num_cra = 6  # Number of main branches from the optic nerve
+
+# Parameters for the retinal arterioles
+retinal_arterioles_length = 125  # Length of the retinal arterioles
 thickness = 6
+branch_probability = 0.3  # More likely to branch in the later stages
+max_depth = 4  # Controlling the depth of the branching process
 
-# Monte Carlo branching parameters
-max_depth = 4  # Limit the depth to create controlled branching
-branch_probability = 0.7  # More likely to branch in the early stages
-initial_branch_count = 6  # Number of main branches from the optic nerve
-angle_range = (-45, 45)
-radius = 180  # Radius for the initial circular spread of branches
-length_range = (20, 35)
+# Parameters for the monte carlo lookup table
+size = 10000  # Number of angles to generate
+mean = 0
+left_angle = -45  # Left turn angle limit
+right_angle = 45  # Right turn angle limit
 
 if __name__ == "__main__":
-
     # Set up turtle environment
     t = turtle.Turtle()
     screen = turtle.Screen()
     screen.bgcolor("white")
     t.hideturtle()
     t.speed(0)
-    t.color("black")
+    t.color("red")
     t.pensize(thickness)
 
     # Generate the lookup table for angles
-    lookup_table = generate_lookup_table()
+    lookup_table = generate_lookup_table(size, mean, left_angle, right_angle)
 
     # Draw initial branches
-    initial_turtles = draw_initial_branches(t, initial_branch_count, base_length)
+    central_retinal_artery = draw_parents(t, num_cra, central_retinal_artery_length)
 
-    # Draw further branches with multiple turtles
-    draw_with_multiple_turtles(initial_turtles, lookup_table, base_length * 0.8, branch_probability)
+    # Draw further branches with random walk-like segments and multiple splits
+    draw_with_children(central_retinal_artery, lookup_table, retinal_arterioles_length, branch_probability)
 
     # Keep the window open until clicked
     screen.exitonclick()
