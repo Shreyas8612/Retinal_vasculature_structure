@@ -2,14 +2,14 @@ from My_Functions import *
 import turtle
 
 # Parameters for the central retinal artery
-central_retinal_artery_length = 125  # Length of the central retinal artery
+central_retinal_artery_length = 100  # Length of the central retinal artery
 num_cra = 6  # Number of main branches from the optic nerve
 
 # Parameters for the retinal arterioles
 retinal_arterioles_length = 125  # Length of the retinal arterioles
 thickness = 6
-branch_probability = 0.3  # More likely to branch in the later stages
-max_depth = 4  # Controlling the depth of the branching process
+branch_probability = 0.3  # More likely to branch in the retinal arterioles
+max_depth = 3  # Controlling the depth of the branching process
 
 # Parameters for the monte carlo lookup table
 size = 10000  # Number of angles to generate
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     central_retinal_artery = draw_parents(t, num_cra, central_retinal_artery_length)
 
     # Draw further branches with random walk-like segments and multiple splits
-    draw_with_children(central_retinal_artery, lookup_table, retinal_arterioles_length, branch_probability)
+    draw_children(central_retinal_artery, lookup_table, retinal_arterioles_length, branch_probability)
 
     # Keep the window open until clicked
     screen.exitonclick()
