@@ -34,7 +34,7 @@ def create_new_person(child):
 
 
 # Function to draw the initial branches (Central Retinal Artery) from the seed point (optic nerve)
-def draw_parents(parent, num_parents, parent_length):
+def draw_parents(parent, num_parents, parent_length, turn_left, turn_right):
     cra = []  # List to store the turtle objects for the Central Retinal Artery
     parent.penup()
     parent.goto(0, 0)  # Start at the approximate location of the optic nerve
@@ -42,14 +42,14 @@ def draw_parents(parent, num_parents, parent_length):
 
     for _ in range(num_parents):  # Loop runs to create number of parents (Central Retinal Artery)
         new_parent = create_new_person(parent)
-        #random_angle = random.uniform(0, 360)
+        random_angle = random.uniform(0, 360)
         # Set the random angle to create a distribution above and below 180 degrees
-        if _ < num_parents // 2:
+        """if _ < num_parents // 2:
             # For the first half of the parents will be above 180 degrees
             random_angle = random.uniform(0, 180)
         else:
             # For the second half of the parents will be below 180 degrees
-            random_angle = random.uniform(180, 360)
+            random_angle = random.uniform(180, 360)"""
         new_parent.setheading(random_angle)  # Set the parent to face at the random angle
 
         # Draw a generally straight path with slight random turns
@@ -58,7 +58,7 @@ def draw_parents(parent, num_parents, parent_length):
 
         for _ in range(num_segments):
             # Apply a small random turn to create a gentle curve
-            turn_angle = random.uniform(-10, 10)  # Random small angle to turn slightly left or right depending on the sign of the angle
+            turn_angle = random.uniform(turn_left, turn_right)  # Random small angle to turn slightly left or right depending on the sign of the angle
             new_parent.right(turn_angle)
             new_parent.forward(segment_length * random.uniform(0.8, 1.2))  # Add some variability to each segment length
 
@@ -67,7 +67,7 @@ def draw_parents(parent, num_parents, parent_length):
 
 
 # Function to draw the further branches (Retinal Arterioles) from the initial branches (Central Retinal Artery)
-def draw_children(parents, monte_carlo, child_length, child_probability, depth=0):
+def draw_children(parents, monte_carlo, child_length, child_probability, turn_left, turn_right, depth=0):
     global branch_count
 
     if depth > max_depth or branch_count >= max_branches:  # Stop if max depth or max branches reached
@@ -81,7 +81,7 @@ def draw_children(parents, monte_carlo, child_length, child_probability, depth=0
 
         for _ in range(num_segments):
             # Apply a small random turn to create a gentle curve
-            turn_angle = random.uniform(-15, 15)  # Random small angle to turn slightly left or right
+            turn_angle = random.uniform(turn_left, turn_right)  # Random small angle to turn slightly left or right
             child.right(turn_angle)
             child.forward(segment_length * random.uniform(0.8, 1.2))  # Add some variability to each segment length
 
@@ -100,5 +100,5 @@ def draw_children(parents, monte_carlo, child_length, child_probability, depth=0
     if ra:
         # The deeper we go into the branching structure, the less likely it is to create new branches.
         new_branch_probability = child_probability * 0.7  # Reduce the probability of branching at each level
-        draw_children(ra, monte_carlo, child_length, new_branch_probability, depth + 1)
+        draw_children(ra, monte_carlo, child_length, new_branch_probability, turn_left, turn_right, depth + 1)
 
