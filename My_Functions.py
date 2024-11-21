@@ -11,13 +11,25 @@ max_branches = 100  # Set a limit for the maximum number of branches
 
 # Define the lookup table of angles using a normal distribution
 # Generates a random size of 10000 angles with a mean of 0 and standard deviation of 15
+# Inputs:
+# sample_size: Number of angles to generate
+# sample_mean: Mean of the normal distribution
+# min_angle: Minimum angle to clip the distribution
+# max_angle: Maximum angle to clip the distribution
+# Returns:
+# List of angles clipped to the range [min_angle, max_angle]
 def generate_lookup_table(sample_size, sample_mean, min_angle, max_angle):
     std_dev = (max_angle - min_angle) / (norm.ppf(0.975) - norm.ppf(0.025))  # Calculate the standard deviation
     angles = np.random.normal(sample_mean, std_dev, sample_size)  # Generate random angles from a normal distribution
+    #angles = angles*(np.pi/180)
     return np.clip(angles, min_angle, max_angle).tolist()  # Clip the angles to [-45, 45] and convert to a list
 
 
 # Function to create a new turtle for branching with adjusted thickness
+# Inputs:
+# child: Turtle object to create a new branch from
+# Returns:
+# New turtle object with adjusted thickness and position
 def create_new_person(child):
     new_child = turtle.Turtle()
     new_child.speed(0)
@@ -27,13 +39,21 @@ def create_new_person(child):
     new_child.pendown()
 
     # Reduce the thickness of the pen for new branches
-    new_thickness = max(child.pensize() * 0.4, 1)  # Reduce the thickness, but not below 1
+    new_thickness = max(child.pensize() * 0.5, 1)  # Reduce the thickness, but not below 1
     new_child.pensize(new_thickness)
     new_child.hideturtle()
     return new_child
 
 
 # Function to draw the initial branches (Central Retinal Artery) from the seed point (optic nerve)
+# Inputs:
+# parent: Turtle object to start drawing from
+# num_parents: Number of main branches to draw
+# parent_length: Length of the main branches
+# turn_left: Angle to turn left
+# turn_right: Angle to turn right
+# Returns:
+# List of turtle objects for the Central Retinal Artery branches
 def draw_parents(parent, num_parents, parent_length, turn_left, turn_right):
     cra = []  # List to store the turtle objects for the Central Retinal Artery
     parent.penup()
@@ -42,14 +62,14 @@ def draw_parents(parent, num_parents, parent_length, turn_left, turn_right):
 
     for _ in range(num_parents):  # Loop runs to create number of parents (Central Retinal Artery)
         new_parent = create_new_person(parent)
-        random_angle = random.uniform(0, 360)
+        # random_angle = random.uniform(0, 360)
         # Set the random angle to create a distribution above and below 180 degrees
-        """if _ < num_parents // 2:
+        if _ < num_parents // 2:
             # For the first half of the parents will be above 180 degrees
-            random_angle = random.uniform(0, 180)
+            random_angle = random.uniform(90, 270)
         else:
             # For the second half of the parents will be below 180 degrees
-            random_angle = random.uniform(180, 360)"""
+            random_angle = random.uniform(-90, 90)
         new_parent.setheading(random_angle)  # Set the parent to face at the random angle
 
         # Draw a generally straight path with slight random turns
@@ -67,6 +87,14 @@ def draw_parents(parent, num_parents, parent_length, turn_left, turn_right):
 
 
 # Function to draw the further branches (Retinal Arterioles) from the initial branches (Central Retinal Artery)
+# Inputs:
+# parents: List of turtle objects for the Central Retinal Artery branches
+# monte_carlo: List of angles for the Monte Carlo lookup table
+# child_length: Length of the retinal arterioles
+# child_probability: Probability of branching at each segment
+# turn_left: Angle to turn left
+# turn_right: Angle to turn right
+# depth: Current depth of the recursive function
 def draw_children(parents, monte_carlo, child_length, child_probability, turn_left, turn_right, depth=0):
     global branch_count
 

@@ -2,7 +2,7 @@ from My_Functions import *
 import turtle
 
 # Parameters for the central retinal artery
-central_retinal_artery_length = 100  # Length of the central retinal artery
+central_retinal_artery_length = 125  # Length of the central retinal artery
 num_cra = 6  # Number of main branches from the optic nerve
 cra_left = -10  # Angle to turn left
 cra_right = 10  # Angle to turn right
@@ -10,10 +10,10 @@ cra_right = 10  # Angle to turn right
 # Parameters for the retinal arterioles
 retinal_arterioles_length = 125  # Length of the retinal arterioles
 thickness = 6
-branch_probability = 0.3  # More likely to branch in the retinal arterioles
-max_depth = 3  # Controlling the depth of the branching process
-ra_left = -15  # Angle to turn left
-ra_right = 15  # Angle to turn right
+branch_probability = 0.7  # More likely to branch in the retinal arterioles
+max_depth = 4  # Controlling the depth of the branching process
+ra_left = -10  # Angle to turn left
+ra_right = 10  # Angle to turn right
 
 # Parameters for the monte carlo lookup table
 size = 10000  # Number of angles to generate
