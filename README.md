@@ -5,8 +5,6 @@ This project aims to model **retinal blood vessels** using Python **Turtle Graph
 
 The generated patterns simulate the intricate structure of blood vessels in the retina, providing a foundation for future integration with medical imaging.
 
-<img src="Random_Vasculature.png" alt="Generated Branching Structure" width="50%" style="display: block; margin: auto;"/>
-
 ## How It Works
 
 ### Monte Carlo Simulations for Branching Angles
