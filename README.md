@@ -1,33 +1,35 @@
-# Retinal Vessel Modeling with L-System and Turtle Graphics
+# Retinal Vessel Modeling with Turtle Graphics and Monte Carlo Simulations
 
 ## Overview
-This project is part of a broader goal to create a model of **retinal blood vessels** to help understand retinal detachment and assist in post-surgery recovery. The main idea is to use **L-systems** (a type of formal grammar) to simulate the branching patterns of blood vessels in the retina. This project uses **Python Turtle Graphics** to visualize these branching patterns, with the generated structures resembling the intricate network of retinal blood vessels.
+This project aims to model **retinal blood vessels** using Python **Turtle Graphics** and **Monte Carlo simulations**. The goal is to generate branching structures resembling retinal vessels to assist in understanding retinal detachment and post-surgery recovery. This model will later be integrated with real retinal image data to enhance its accuracy and clinical utility.
 
-The ultimate aim is to compare vessel positions before and after surgery and assist patients in positioning their heads to promote the correct placement of the retina during healing. For now, the project focuses on modeling vessel-like branching structures as a foundation.
+The generated patterns simulate the intricate structure of blood vessels in the retina, providing a foundation for future integration with medical imaging.
 
-<img src="L-Systems.webp" alt="L-Systems" width="40%" style="display: block; margin: auto;"/>
-
-*Note: The image above is a visual representation of what an L-system-generated branching structure might look like. The code in this project generates a similar pattern.*
+<img src="Random_Vasculature.png" alt="Generated Branching Structure" width="50%" style="display: block; margin: auto;"/>
 
 ## How It Works
 
-### L-System Basics
-- An **L-system** (Lindenmayer System) is a set of rules and an initial sequence (called an **axiom**) that, when iterated over, generates a complex pattern.
-- Here, we use a starting axiom "F" and a rule that defines how "F" changes:
-  - `F -> FF+[+F-F-F]-[-F+F+F]`
+### Monte Carlo Simulations for Branching Angles
+- The **Monte Carlo method** is used to generate a **lookup table of angles** based on a normal distribution. These angles determine the direction of branching, creating realistic vessel-like patterns.
+- Parameters for the distribution include:
+  - **Mean angle:** 0° (straight path).
+  - **Standard deviation:** Derived from the desired branching angle range (e.g., -45° to +45°).
+  - **Clipping:** Ensures angles stay within the realistic bounds for branching.
 - The symbol "F" means **draw forward**.
 - Symbols `+` and `-` represent **turning** by a specified angle.
 - The symbols `[` and `]` are used to **save** and **restore** the turtle's position and orientation, creating branches in the drawing.
 
-### Turtle Graphics
-- The project uses **Python's Turtle Graphics** to draw the vessel-like structures.
-- The turtle starts in the center of the screen, facing upwards, and follows the **L-system instructions** to draw the branches.
+### Turtle Graphics for Visualization
+- **Turtle Graphics** is used to visualize the branching structure.
+- The process starts with a central "trunk" (representing the **Central Retinal Artery**) and recursively adds smaller branches (representing **Retinal Arterioles**).
+- **Branch Thickness:** Each successive branch reduces in thickness, mimicking the tapering of blood vessels.
+- **Random Walks:** Randomly varied forward movements and angle turns add a natural, organic feel to the branching pattern.
 
 ### Parameters Used
-- **Axiom**: `"F"` — The starting point of our drawing sequence.
-- **Rules**: `{"F": "FF+[+F-F-F]-[-F+F+F]"}` — Defines how "F" expands during each iteration.
-- **Angle**: `22.5°` — The angle by which the turtle turns to create branches.
-- **Iterations**: `4` — The number of times the axiom is expanded by applying the rules.
+- **Initial Branch Count:** 6 main branches (Central Retinal Artery).
+- **Branch Length:**: 125 units for the initial artery and arterioles.
+- **Branching Probability:**: Controls how likely a branch is to split further.
+- **Maximum Depth:**: Limits the recursion to ensure computational efficiency.
 
 ### How to Run
 1. Make sure you have **Python** installed on your system.
@@ -36,27 +38,31 @@ The ultimate aim is to compare vessel positions before and after surgery and ass
    ```sh
    python retinal_model.py
    ```
-4. A window will open, and you will see the turtle drawing the branching structure.
+4. The Turtle Graphics window will display the branching structure.
 
 ## Code Explanation
-1. **L-system Generation**:
-   - The `create_lsystem()` function iteratively applies the production rules to generate a sequence that represents the final structure.
-2. **Drawing with Turtle**:
-   - The `draw_lsystem()` function takes the generated sequence and commands the turtle to draw forward, turn, and create branches.
-3. **Main Script**:
-   - Sets up the turtle graphics, moves the turtle to the starting point, and then draws the branching structure based on the L-system instructions.
+1. **Monte Carlo Angle Generation:**
+   - The `generate_lookup_table()` function creates a list of random angles using a normal distribution. These angles are used to determine how the branches turn, making the branching pattern look more natural and realistic.
+2. **Creating New Branches:**
+   - The `create_new_person()` function creates a new "turtle" (a drawing object) that starts from the position and direction of its "parent branch." It reduces the thickness of the new branch to simulate the tapering of real blood vessels.
+3. **Drawing Central Retinal Arteries:**
+   - The `draw_parents()` function generates the main branches starting from the center, representing the Central Retinal Artery. These branches follow random directions and have a generally straight path with slight turns.
+4. **Drawing Retinal Arterioles:**
+    - The `draw_children()` function adds smaller branches to the main arteries, representing **Retinal Arterioles**. It uses a recursive approach to create a branching structure, with each new branch having a chance to split further based on a branching probability. This step uses the angles generated by the Monte Carlo method for realistic turns.
+5. **Main Function:**
+    - The main script initializes the turtle environment and sets up parameters for the simulation. It calls `draw_parents()` to create the main arteries and then uses `draw_children()` to add smaller branches. The final pattern is displayed in a Turtle Graphics window.
 
 ## Future Steps
-- **Add Realism**: Adjust the rules and parameters to better mimic the retinal blood vessels' complexity, including the thickness and curvature.
-- **Integrate Image Processing**: Use retinal fundus images to compare actual vessels with the generated patterns.
-- **Layer Differentiation**: Create separate models for different retinal vascular layers, such as SVP (Superficial Vascular Plexus) and DCP (Deep Capillary Plexus).
+- **Add Realism**: Further refine the branching logic and parameters to better mimic the complexity of real retinal vessels, including more natural curvature, varying thickness, and density.
+- **Integrate Image Processing**: Extract data from retinal fundus images and use it to guide the branching structure, allowing the simulation to match actual retinal patterns.
 
 ## Dependencies
 - **Python** (tested on version 3.7 and above)
 - **Turtle Graphics** (comes included with standard Python libraries)
+- **NumPy** and **SciPy** for Monte Carlo simulations
 
 ## Acknowledgments
-- **Lindenmayer Systems**: Inspired by the biological modeling of plant growth.
+- **Monte Carlo Methods:**: Inspired by probabilistic modeling techniques.
 - **Turtle Graphics**: Provides an intuitive way to visualize branching structures.
 
 ## Contact
